@@ -1,0 +1,21 @@
+services:
+  ros_container:
+    image: ros_image:${DOCKER_ROS_DISTRO}
+    user: 1000:1000
+    volumes:
+      - "/etc/group:/etc/group:ro"
+      - "/etc/passwd:/etc/passwd:ro"
+      - "/etc/shadow:/etc/shadow:ro"
+      - "${HOME}:${HOME}"
+      - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
+    working_dir: "${HOME}"
+    environment:
+      - DISPLAY
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
